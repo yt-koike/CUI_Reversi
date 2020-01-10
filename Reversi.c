@@ -7,10 +7,12 @@
 
 char map[WIDTH*HEIGHT];
 void show();
-int check(int line,int row,int player);
-
+int check(int p,int dx,int dy,char player);
+int checkall(int p,char player);
+int check_one(int p,int dx,int dy,char player);
 
 char c(int line,int row){
+if(line<0||line>7||row<0||row>7)return -1;
 return map[MP(line,row)];
 }
 
@@ -41,6 +43,11 @@ show();
 printf("Player%d '%c':",player,(player==1)?P1:P2);
 scanf("%2s",input);
 if(input[0]=='q')break;
+if(input[0]=='p'){
+printf("Pass\n");
+player=3-player;
+continue;
+}
 if(input[0]=='r'){
 int point1=0,point2=0;
 for(int i=0;i<size;i++){
@@ -62,7 +69,7 @@ if(c(line,row)!='_'){
 printf("The space is occupied.\n");
 continue;
 }
-int flipped=check(line,row,player);
+int flipped=checkall(line+row*WIDTH,(player==1)?P1:P2);
 if(flipped==0){
 printf("You cannot place it there.\n");
 continue;
@@ -87,6 +94,38 @@ for(int i=0;i<HEIGHT;i++){
 return;
 }
 
+int checkall(int p,char player){
+int sum=0;
+sum+=check(p,1,0,player);
+sum+=check(p,-1,0,player);
+sum+=check(p,0,1,player);
+sum+=check(p,0,-1,player);
+sum+=check(p,1,1,player);
+sum+=check(p,1,-1,player);
+sum+=check(p,-1,1,player);
+sum+=check(p,-1,-1,player);
+return sum;
+}
+
+int check(int p,int dx,int dy,char player){
+int x,y,count=0;
+x=p%WIDTH;
+y=p/WIDTH;
+while(x>0&&x<WIDTH&&y>0&&y<HEIGHT){
+x+=dx;
+y+=dy;
+if(c(x,y)=='_')return 0;
+if(c(x,y)==player)break;
+count++;
+}
+for(int i=0;i<count;i++){
+x-=dx;
+y-=dy;
+flip(x,y);
+}
+return count;
+}
+/*
 int check(int line,int row,int player){
 int flipped=0;
 char player_char=(player==1)?P1:P2;
@@ -97,7 +136,7 @@ x=line;
 y=row;
 temp=0;
 x--;
-while(x>0){
+while(x>=0){
 	if(c(x,y)=='_')break;
 	if(c(x,y)==enemy)temp++;
 	if(c(x,y)==player_char){
@@ -129,7 +168,7 @@ x=line;
 y=row;
 temp=0;
 y--;
-while(y>0){
+while(y>=0){
 	if(c(x,y)=='_')break;
         if(c(x,y)==enemy)temp++;
         if(c(x,y)==player_char){
@@ -162,7 +201,7 @@ y=row;
 temp=0;
 x--;
 y--;
-while(x>0&&y>0){
+while(x>=0&&y>=0){
 	if(c(x,y)=='_')break;
         if(c(x,y)==enemy)temp++;
         if(c(x,y)==player_char){
@@ -179,7 +218,7 @@ y=row;
 temp=0;
 x--;
 y++;
-while(x>0&&y<HEIGHT){
+while(x>=0&&y<HEIGHT){
 	if(c(x,y)=='_')break;
         if(c(x,y)==enemy)temp++;
         if(c(x,y)==player_char){
@@ -197,7 +236,7 @@ y=row;
 temp=0;
 x++;
 y--;
-while(x<WIDTH&&y>0){
+while(x<WIDTH&&y>=0){
 	if(c(x,y)=='_')break;
         if(c(x,y)==enemy)temp++;
         if(c(x,y)==player_char){
@@ -231,3 +270,4 @@ while(x<WIDTH&&y<HEIGHT){
 
 return flipped;
 }
+*/
