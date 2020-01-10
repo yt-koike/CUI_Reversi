@@ -98,6 +98,7 @@ y=row;
 temp=0;
 x--;
 while(x>0){
+	if(c(x,y)=='_')break;
 	if(c(x,y)==enemy)temp++;
 	if(c(x,y)==player_char){
 		flipped+=temp;
@@ -113,6 +114,7 @@ y=row;
 temp=0;
 x++;
 while(x<WIDTH){
+	if(c(x,y)=='_')break;
 	if(c(x,y)==enemy)temp++;
 	if(c(x,y)==player_char){
 		flipped+=temp;
@@ -128,6 +130,7 @@ y=row;
 temp=0;
 y--;
 while(y>0){
+	if(c(x,y)=='_')break;
         if(c(x,y)==enemy)temp++;
         if(c(x,y)==player_char){
                 flipped+=temp;
@@ -143,6 +146,7 @@ y=row;
 temp=0;
 y++;
 while(y<HEIGHT){
+	if(c(x,y)=='_')break;
         if(c(x,y)==enemy)temp++;
         if(c(x,y)==player_char){
                 flipped+=temp;
@@ -159,6 +163,7 @@ temp=0;
 x--;
 y--;
 while(x>0&&y>0){
+	if(c(x,y)=='_')break;
         if(c(x,y)==enemy)temp++;
         if(c(x,y)==player_char){
                 flipped+=temp;
@@ -175,6 +180,7 @@ temp=0;
 x--;
 y++;
 while(x>0&&y<HEIGHT){
+	if(c(x,y)=='_')break;
         if(c(x,y)==enemy)temp++;
         if(c(x,y)==player_char){
                 flipped+=temp;
@@ -192,6 +198,7 @@ temp=0;
 x++;
 y--;
 while(x<WIDTH&&y>0){
+	if(c(x,y)=='_')break;
         if(c(x,y)==enemy)temp++;
         if(c(x,y)==player_char){
                 flipped+=temp;
@@ -209,6 +216,7 @@ temp=0;
 x++;
 y++;
 while(x<WIDTH&&y<HEIGHT){
+	if(c(x,y)=='_')break;
         if(c(x,y)==enemy)temp++;
         if(c(x,y)==player_char){
                 flipped+=temp;
