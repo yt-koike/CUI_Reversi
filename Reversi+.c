@@ -12,6 +12,7 @@ void mapshow();
 int count_flippable(int p,int dx,int dy,int player_number);
 int count_flippable_all(int p,int player_number);
 
+
 char player_char(int player_number){
 	if(player_number==1)return P1;
 	if(player_number==2)return P2;
@@ -39,9 +40,8 @@ void flip(int pointer){
 	return;
 }
 
-
-
 int main(){
+	FILE *log_file=fopen("Reversi.log","w");
 	//init start
 	map_init();
 	int current_player_number=1;
@@ -56,10 +56,14 @@ int main(){
 		//input start
 		printf("Current player is %d '%c':",current_player_number,player_char(current_player_number));
 		scanf("%2s",input);
+		fprintf(log_file,"%s\n",input);
 		//input end
 
 		//custom function start
-		if(input[0]=='q')break;
+		if(input[0]=='q'){
+		fclose(log_file);
+		return 0;
+		}
 		if(input[0]=='p'){
 			printf("Pass\n");
 			current_player_number=3-current_player_number;
@@ -112,6 +116,7 @@ int main(){
 			else
 			        printf("Draw");
 			printf("END\n");
+			fclose(log_file);
 			return 0;
 		}
 		//game_clear check end
@@ -149,15 +154,15 @@ int count_flippable_all(int pointer,int player_number){
 int count_flippable(int piece_pointer,int dx,int dy,int player_num){
 	int dp=XY_TO_POINTER(dx,dy);
 	int flippable_num=0;
-	char piece;
-	for(int current_pointer=piece_pointer+dp ;piece!=player_char(player_num) ;current_pointer+=dp){
-		piece=map[current_pointer];
-		if(piece==BLANK||piece==-1)return 0;
+	int opponent_line_start_pointer,opponent_line_end_pointer;
+	opponent_line_start_pointer=piece_pointer+dp;
+	for(int current_pointer=opponent_line_start_pointer;map[current_pointer]!=player_char(player_num);current_pointer+=dp){
+		if(map[current_pointer]==BLANK||map[current_pointer]==-1)return 0;
+		opponent_line_end_pointer=current_pointer;
 		flippable_num++;
 	}
-	for(int i=0;i<flippable_num;i++){
-		p+=dp;
+	for(int p=opponent_line_start_pointer;p!=opponent_line_end_pointer;p+=dp)
 		flip(p);
-	}
+
 	return flippable_num;
 }
