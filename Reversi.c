@@ -147,6 +147,7 @@ int count_flippable_all(int pointer,int player_number){
 }
 
 int count_flippable(int piece_pointer,int dx,int dy,int player_num){
+        int p=piece_pointer;
 	int dp=XY_TO_POINTER(dx,dy);
 	int flippable_num=0;
 	char piece;
@@ -157,7 +158,7 @@ int count_flippable(int piece_pointer,int dx,int dy,int player_num){
 	}
 	for(int i=0;i<flippable_num;i++){
 		p+=dp;
-		flip(p);
+		map[p]=player_char(player_num);
 	}
 	return flippable_num;
 }
